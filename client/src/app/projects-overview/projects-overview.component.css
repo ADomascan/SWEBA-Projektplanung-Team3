@@ -1,0 +1,32 @@
+.table {
+    width: 100%;
+    border: 1px solid #e0e0e0;
+    padding-top: 30px;
+}
+
+td.mat-column-position {
+    width: 5em;
+}
+
+td.mat-column-name {
+    width: 40em;
+}
+
+td.mat-column-startDate {
+    width: 15em;
+}
+
+td.mat-column-projectManager {
+    width: 15em
+}
+
+
+.mat-mdc-row .mat-mdc-cell {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+    border-color: currentColor;
+}
