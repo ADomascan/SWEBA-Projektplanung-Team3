@@ -12,6 +12,7 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {CommonModule} from "@angular/common";
 import {MatSortModule} from "@angular/material/sort";
 import {CdkTableModule} from "@angular/cdk/table";
+import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import {CdkTableModule} from "@angular/cdk/table";
     MatSortModule,
     CommonModule,
     CdkTableModule,
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

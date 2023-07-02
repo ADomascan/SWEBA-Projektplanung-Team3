@@ -20,6 +20,9 @@ td.mat-column-projectManager {
     width: 15em
 }
 
+td.mat-column-expand {
+    width: 5em
+}
 
 .mat-mdc-row .mat-mdc-cell {
     border-bottom: 1px solid transparent;
@@ -29,4 +32,42 @@ td.mat-column-projectManager {
 
 .mat-mdc-row:hover .mat-mdc-cell {
     border-color: currentColor;
+}
+
+tr.example-detail-row {
+    height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+}
+
+.example-element-row td {
+    border-bottom-width: 0;
+}
+
+.element-detail {
+    overflow: hidden;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+button {
+    padding: 0;
+    margin: 20px 40px;
+    color: #3573b2;
+    background-color: #ffffff;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+button:hover {
+    color: #0b437c;
 }

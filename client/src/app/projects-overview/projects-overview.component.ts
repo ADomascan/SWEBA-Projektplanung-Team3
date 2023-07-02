@@ -2,6 +2,8 @@ import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
+import {animate, state, style, transition, trigger} from "@angular/animations";
+import {MatIconModule} from '@angular/material/icon';
 
 
 export interface Project {
@@ -26,15 +28,24 @@ const ELEMENT_DATA: Project[] = [
   selector: 'app-projects-overview',
   templateUrl: './projects-overview.component.html',
   styleUrls: ['./projects-overview.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
   // standalone: true,
   // imports: [MatTableModule, NgIf, NgFor]
 })
 
 export class ProjectsOverviewComponent implements AfterViewInit {
 
-  displayedColumns: string[] = ['position', 'name', 'startDate', 'projectManager'];
+  displayedColumns = ['position', 'name', 'startDate', 'projectManager'];
   dataSource = new MatTableDataSource<Project>(ELEMENT_DATA);
   clickedRows = new Set<Project>();
+  columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
+  expandedElement: Project | null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
