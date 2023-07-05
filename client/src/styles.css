@@ -1,1 +1,55 @@
-/* You can add global styles to this file, and also import other style files */
+/* Application-wide Styles */
+/* @import "~@angular/material/prebuilt-themes/indigo-pink.css"; */
+
+.mat-typography h1 {
+    color: #3573b2;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 28px;
+    text-align: center;
+}
+h2, h3 {
+    color: #65676b;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: lighter;
+    padding-top: 20px;
+}
+body {
+    margin: 2em;
+}
+body, input[type="text"], button {
+    color: #333;
+    font-family: Cambria, Georgia, serif;
+}
+button {
+    background-color: #eee;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #0e5ba8;
+    font-size: 1.1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    margin-top: 0.2rem;
+}
+
+button:hover {
+    background-color: cornflowerblue;
+    color: white;
+}
+
+
+/* everywhere else */
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 30px;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+

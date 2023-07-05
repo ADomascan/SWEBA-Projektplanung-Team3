@@ -1,0 +1,117 @@
+<div>
+    <a routerLink="/overview"> Back to Projects Overview </a>
+    <h1> Project Detail</h1>
+</div>
+<ngx-graph
+        class="chart-container"
+        [view]="[500, 200]"
+        [links]="[
+    {
+      id: 'a',
+      source: 'first',
+    target: 'second',
+      label: 'is parent of'
+    }, {
+      id: 'b',
+      source: 'first',
+      target: 'third',
+      label: 'custom label'
+    }
+  ]"
+        [nodes]="[
+    {
+      id: 'first',
+      label: 'A'
+    }, {
+      id: 'second',
+      label: 'B'
+    }, {
+      id: 'third',
+      label: 'C'
+    }
+  ]"
+>
+</ngx-graph>
+<button> Create Workpackage </button>
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+
+        <!-- Id Column -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <!-- StartDate Column -->
+        <ng-container matColumnDef="projectid">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Project Id </th>
+            <td mat-cell *matCellDef="let element"> {{element.projectid}} </td>
+        </ng-container>
+
+        <!-- PM Column -->
+        <ng-container matColumnDef="duration">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Duration (h) </th>
+            <td mat-cell *matCellDef="let element"> {{element.duration}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="expand">
+            <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                    <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                    <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+                <div class="element-detail"
+                     [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                    <div class="extendedRow">
+                        <button> Edit </button>
+                        <button> Delete </button>
+                    </div>
+                </div>
+            </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+            class="example-element-row"
+            [class.example-expanded-row]="expandedElement === element"
+            (click)="expandedElement = expandedElement === element ? null : element; clickedRows.add(element)"
+            [class.demo-row-is-clicked]="clickedRows.has(element)">
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[10, 20, 30]"
+                   showFirstLastButtons
+                   aria-label="Select page">
+    </mat-paginator>
+</div>
+
+<div>
+    <h3>
+        Click Log
+    </h3>
+</div>
+
+<div *ngIf="!clickedRows.size">
+    Clicked rows will be logged here
+</div>
+
+<ul>
+    <li *ngFor="let clickedRow of clickedRows">
+        Clicked on {{clickedRow.name}}
+    </li>
+</ul>
