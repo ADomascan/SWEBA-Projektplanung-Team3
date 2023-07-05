@@ -13,11 +13,15 @@ import {CommonModule} from "@angular/common";
 import {MatSortModule} from "@angular/material/sort";
 import {CdkTableModule} from "@angular/cdk/table";
 import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
+import { ProjectDetailComponent } from './project-detail/project-detail.component';
+import {NgxGraphModule} from "@swimlane/ngx-graph";
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProjectsOverviewComponent
+    ProjectsOverviewComponent,
+    ProjectDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -31,6 +35,8 @@ import {MatIconModule} from "@angular/material/icon";
     CommonModule,
     CdkTableModule,
     MatIconModule,
+    MatButtonModule,
+    NgxGraphModule
   ],
   providers: [],
   bootstrap: [AppComponent]

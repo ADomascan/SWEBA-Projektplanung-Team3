@@ -6,30 +6,26 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 import {MatIconModule} from '@angular/material/icon';
 import {ProjectService} from "../project.service";
 import {DataSource} from "@angular/cdk/collections";
+import {Project} from "../projects-overview/projects-overview.component";
 
-
-export interface Project {
+export interface Workpackage {
   id: number;
+  projectid: number;
   name: string;
-  startDate: Date;
-  projectManager:string;
+  duration: number;
 }
 
-const ELEMENT_DATA: Project[] = [
-  {id: 1, name: 'Implementierung CRM-System 1', startDate: new Date("2024-02-01") , projectManager: 'Max Müller'},
-  {id: 2, name: 'Implementierung CRM-System 2', startDate: new Date("2023-10-23") , projectManager: 'Max Mustermann'},
-  {id: 3, name: 'Implementierung CRM-System 3', startDate: new Date("2023-07-12") , projectManager: 'Maria Müller'},
-  {id: 4, name: 'Implementierung CRM-System 4', startDate: new Date("2024-01-09") , projectManager: 'Max Müller'}
+const ELEMENT_DATA: Workpackage[] = [
+  {id: 1, projectid: 1, name: 'Aufgabe 1', duration: 12 },
+  {id: 2, projectid: 1, name: 'Aufgabe 2', duration: 5 },
+  {id: 3, projectid: 1, name: 'Aufgabe 3', duration: 2 },
+  {id: 4, projectid: 1, name: 'Aufgabe 4', duration: 4 },
 ];
 
-
-/**
- * @title Binding event handlers and properties to the table rows.
- */
 @Component({
-  selector: 'app-projects-overview',
-  templateUrl: './projects-overview.component.html',
-  styleUrls: ['./projects-overview.component.css'],
+  selector: 'app-project-detail',
+  templateUrl: './project-detail.component.html',
+  styleUrls: ['./project-detail.component.css'],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({height: '0px', minHeight: '0'})),
@@ -38,11 +34,10 @@ const ELEMENT_DATA: Project[] = [
     ]),
   ],
 })
+export class ProjectDetailComponent  {
 
-export class ProjectsOverviewComponent implements AfterViewInit {
-
-  displayedColumns = ['id', 'name', 'startDate', 'projectManager'];
-  dataSource = new MatTableDataSource<Project>(ELEMENT_DATA);
+  displayedColumns = ['id', 'name', 'duration', 'projectid'];
+  dataSource = new MatTableDataSource<Workpackage>(ELEMENT_DATA);
   clickedRows = new Set<Project>();
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   expandedElement: Project | null;
@@ -57,16 +52,7 @@ export class ProjectsOverviewComponent implements AfterViewInit {
   }
 
 
-  /* projects: Project[] = [];
-
-  constructor(private projectService: ProjectService) { }
-
-  ngOnInit(): void {
-    this.projectService.getProjects()
-        .subscribe(projects => this.projects);
-  }
-  */
-
   protected readonly DataSource = DataSource;
   protected readonly ELEMENT_DATA = ELEMENT_DATA;
+
 }
