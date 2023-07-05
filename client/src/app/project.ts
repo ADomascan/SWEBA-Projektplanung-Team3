@@ -1,5 +1,5 @@
 export interface Project {
-    _id: number;
+    _id: string;
     name: string;
     description?: string;
     startDate: Date;
@@ -10,7 +10,6 @@ export interface Project {
             startDate?:Date;
             duration?:number;
             previousPackage?:string;
-            nextPackage?:string;
             assignee?:string;
             _pid?:string;
         }],

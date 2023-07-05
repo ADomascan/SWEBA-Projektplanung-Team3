@@ -11,7 +11,6 @@ workPackages?: [{
         startDate?:Date;
         duration?:number;
         previousPackage?:mongodb.ObjectId;
-        nextPackage?:mongodb.ObjectId;
         assignee?:string;
         _pid?:mongodb.ObjectId;
     }],
