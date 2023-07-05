@@ -3,8 +3,6 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {animate, state, style, transition, trigger} from "@angular/animations";
-import {MatIconModule} from '@angular/material/icon';
-import {ProjectService} from "../project.service";
 import {DataSource} from "@angular/cdk/collections";
 
 

@@ -1,10 +1,8 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {animate, state, style, transition, trigger} from "@angular/animations";
-import {MatIconModule} from '@angular/material/icon';
-import {ProjectService} from "../project.service";
 import {DataSource} from "@angular/cdk/collections";
 import {Project} from "../projects-overview/projects-overview.component";
 
