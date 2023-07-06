@@ -19,3 +19,26 @@ describe('ProjectDetailComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+
+/* vielleicht lässt sich dieser Test irgendwie implementieren */
+/* 
+import {ProjectService} from './app/project.service.js';
+
+const dbEntry = {
+      name: "Test Project",
+   description: "First test project",
+   startDate: '2023-07-01',
+   projectManager:"Anna",
+workPackages: [{
+    package:[{
+        name:"Package1",
+        startDate:'2023-07-03',
+        duration:20,
+    }],
+}],
+}
+;
+
+createProject(dbEntry).console.log();
+ */
