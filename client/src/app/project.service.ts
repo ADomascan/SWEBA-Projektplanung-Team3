@@ -8,13 +8,14 @@ import { Project } from './project';
 })
 export class ProjectService {
  private url = 'http://localhost:5200';
- private projects$: Subject<Project[]> = new Subject();
+ public projects$: Subject<Project[]> = new Subject();
  
  constructor(private httpClient: HttpClient) { }
  
  private refreshProjects() {
    this.httpClient.get<Project[]>(`${this.url}/projects`)
      .subscribe(projects => {
+         console.log(projects);
        this.projects$.next(projects);
      });
  }

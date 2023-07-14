@@ -1,24 +1,15 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {DataSource} from "@angular/cdk/collections";
-import {Project} from "../projects-overview/projects-overview.component";
+import {Project} from "../project";
+import {BehaviorSubject, Observable} from "rxjs";
+import {ProjectService} from "../project.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import * as moment from "moment/moment";
 
-export interface Workpackage {
-  id: number;
-  projectid: number;
-  name: string;
-  duration: number;
-}
-
-const ELEMENT_DATA: Workpackage[] = [
-  {id: 1, projectid: 1, name: 'Aufgabe 1', duration: 12 },
-  {id: 2, projectid: 1, name: 'Aufgabe 2', duration: 5 },
-  {id: 3, projectid: 1, name: 'Aufgabe 3', duration: 2 },
-  {id: 4, projectid: 1, name: 'Aufgabe 4', duration: 4 },
-];
 
 @Component({
   selector: 'app-project-detail',
@@ -32,25 +23,63 @@ const ELEMENT_DATA: Workpackage[] = [
     ]),
   ],
 })
-export class ProjectDetailComponent  {
+export class ProjectDetailComponent implements OnInit {
 
-  displayedColumns = ['id', 'name', 'duration', 'projectid'];
-  dataSource = new MatTableDataSource<Workpackage>(ELEMENT_DATA);
-  clickedRows = new Set<Project>();
+  project: BehaviorSubject<Project> = new BehaviorSubject<Project>({
+    _id: "",
+    name: "",
+    projectManager: "",
+    startDate: new Date(),
+    workPackages:  [{
+      workpackage:[{
+        name: "",
+        startDate: new Date(),
+        duration: 0,
+        previousPackage: "",
+        assignee: "",
+        _pid: "",
+      }],
+    }],
+
+  });
+
+  constructor(
+      private router: Router,
+      private route: ActivatedRoute,
+      private projectService: ProjectService,
+) { }
+
+
+  displayedColumns = ['name', 'duration', 'previousPackage', 'assignee'];
+  dataSource = new MatTableDataSource<any>;
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   expandedElement: Project | null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  ngAfterViewInit() {
-    console.log(this.sort) //not undefined
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+  ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) {
+      alert('No id provided');
+    }
+
+    this.projectService.getProject(id !).subscribe((data) => {
+      this.dataSource = new MatTableDataSource(data.workPackages);
+      this.project.next(data);
+    });
+
   }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    console.log('after view init', this.project.value.workPackages);
+  }
 
-  protected readonly DataSource = DataSource;
-  protected readonly ELEMENT_DATA = ELEMENT_DATA;
+  public convertDate(date: Date) {
+    return moment(date).format('DD.MM.YYYY');
+  }
+
 
 }

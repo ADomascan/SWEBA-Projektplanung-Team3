@@ -5,7 +5,7 @@ export interface Project {
     startDate: Date;
     projectManager:string;
     workPackages?: [{
-        package?:[{
+        workpackage?:[{
             name:string;
             startDate?:Date;
             duration?:number;
