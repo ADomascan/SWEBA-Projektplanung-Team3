@@ -42,8 +42,6 @@ export class WorkpackageFormComponent {
     assignee: new FormControl('')
   });
 
-  private currentProject: Project;
-
   constructor(private fb: FormBuilder) { }
 
   get id() { return this.workpackageForm.get('_pid')!; }

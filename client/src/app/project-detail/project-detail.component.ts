@@ -4,7 +4,7 @@ import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {Project} from "../project";
-import {BehaviorSubject, window} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 import {ProjectService} from "../project.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as moment from "moment/moment";
