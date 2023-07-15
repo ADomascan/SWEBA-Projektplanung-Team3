@@ -1,8 +1,14 @@
+ngx-graph {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
 .graph {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    user-select: none; }
+    user-select: none;
+}
 .graph .edge {
     stroke: #666;
     fill: none; }
@@ -53,20 +59,29 @@ button:hover {
     padding-top: 30px;
 }
 
-td.mat-column-id {
-    width: 5em;
+.header-title {
+    align-self: center;
+    justify-self: center;
+}
+
+.header {
+    display: grid;
+}
+
+.new-button {
+    background-color: #efefef;
+    padding: 10px;
+    margin-left: auto;
+    align-self: end;
+    margin-right: 5px;
 }
 
 td.mat-column-name {
-    width: 40em;
+    width: 80em;
 }
 
-td.mat-column-startDate {
-    width: 15em;
-}
-
-td.mat-column-projectManager {
-    width: 15em
+td.mat-column-duration {
+    width: 20em;
 }
 
 td.mat-column-expand {
@@ -83,19 +98,19 @@ td.mat-column-expand {
     border-color: currentColor;
 }
 
-tr.example-detail-row {
+tr.detail-row {
     height: 0;
 }
 
-tr.example-element-row:not(.example-expanded-row):hover {
+tr.element-row:not(.expanded-row):hover {
     background: whitesmoke;
 }
 
-tr.example-element-row:not(.example-expanded-row):active {
+tr.element-row:not(.expanded-row):active {
     background: #efefef;
 }
 
-.example-element-row td {
+.element-row td {
     border-bottom-width: 0;
 }
 
@@ -104,4 +119,26 @@ tr.example-element-row:not(.example-expanded-row):active {
     display: flex;
     align-content: center;
     justify-content: center;
+}
+
+.back-button {
+    color: #3573b2;
+    text-decoration: none;
+}
+
+.back-button:hover {
+    color: #0b437c;
+}
+.project-fields {
+    display: flex;
+    margin-top: 15px;
+    margin-bottom: 30px;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    font-size: 18px;
+}
+
+.field {
+    padding: 5px;
 }

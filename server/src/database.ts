@@ -37,6 +37,17 @@ async function applySchemaValidation(db: mongodb.Db) {
                workPackages: {
                    bsonType: "array",
                    description: "'workPackages' is an array",
+                   package:{
+                       bsonType: "object",
+                       additionalProperties: true,
+                       properties: {
+                           _pid: {},
+                           name: {
+                               bsonType: "string",
+                               description: "'name' is an array",
+                           }
+                       }
+                   }
                },
            },
        },

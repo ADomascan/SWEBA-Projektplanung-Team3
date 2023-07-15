@@ -1,0 +1,46 @@
+<form class="project-form" autocomplete="off" [formGroup]="workpackageForm" (ngSubmit)="submitForm()">
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" id="wpname" formControlName="wpname" placeholder="Workpackage Name" required>
+        <label>Name</label>
+    </div>
+
+    <div *ngIf="wpname.invalid && (wpname.dirty ||wpname.touched)" class="alert alert-danger">
+        <div *ngIf="wpname.errors?.['required']">
+            Workpackage Name is required.
+        </div>
+        <div *ngIf="wpname.errors?.['minlength']">
+            Name must be at least 3 characters long.
+        </div>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input class="form-control" type="number" formControlName="durationInDays" placeholder="Duration in workdays" required>
+        <label>Duration (d)</label>
+    </div>
+
+    <div *ngIf="durationInDays.invalid && (durationInDays.dirty || durationInDays.touched)" class="alert alert-danger">
+
+        <div *ngIf="durationInDays.errors?.['required']">
+            Duration is required.
+        </div>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" formControlName="assignee" placeholder="Name of Assignee" required>
+        <label>Assignee</label>
+    </div>
+
+    <div *ngIf="assignee.invalid && (assignee.dirty || assignee.touched)" class="alert alert-danger">
+
+        <div *ngIf="assignee.errors?.['required']">
+            Assignee is required.
+        </div>
+    </div>
+
+    <div class="buttons">
+        <a routerLink="/projects/detail/{{initialState.value._id}}">
+            <button>Cancel</button>
+        </a>
+        <button type="submit" [disabled]="workpackageForm.invalid">Create</button>
+    </div>
+</form>

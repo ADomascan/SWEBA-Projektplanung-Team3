@@ -1,0 +1,47 @@
+<form class="project-form" autocomplete="off" [formGroup]="projectForm" (ngSubmit)="submitForm()">
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" id="name" formControlName="name" placeholder="Projectname" required>
+        <label>Name</label>
+    </div>
+
+    <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+        <div *ngIf="name.errors?.['required']">
+            Name is required.
+        </div>
+        <div *ngIf="name.errors?.['minlength']">
+            Name must be at least 3 characters long.
+        </div>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input class="form-control" type="date" formControlName="startDate" placeholder="Start Date" required>
+        <label>Start Date</label>
+    </div>
+
+    <div *ngIf="startDate.invalid && (startDate.dirty || startDate.touched)" class="alert alert-danger">
+
+        <div *ngIf="startDate.errors?.['required']">
+            Start Date is required.
+        </div>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" formControlName="projectManager" placeholder="Name of Project Manager" required>
+        <label>Project Manager</label>
+    </div>
+
+    <div *ngIf="projectManager.invalid && (projectManager.dirty || projectManager.touched)" class="alert alert-danger">
+
+        <div *ngIf="projectManager.errors?.['required']">
+            Project Manager is required.
+        </div>
+    </div>
+
+    <div class="buttons">
+        <a routerLink="/projects">
+            <button>Cancel</button>
+        </a>
+        <button *ngIf="!id" type="submit" [disabled]="projectForm.invalid">Create</button>
+        <button *ngIf="id" type="submit" [disabled]="projectForm.invalid">Update</button>
+    </div>
+</form>

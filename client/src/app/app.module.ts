@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -16,12 +16,23 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import {NgxGraphModule} from "@swimlane/ngx-graph";
+import { ProjectFormComponent } from './project-form/project-form.component';
+import {ReactiveFormsModule} from "@angular/forms";
+import { CreateProjectComponent } from './create-project/create-project.component';
+import { EditProjectComponent } from './edit-project/edit-project.component';
+import { CreateWorkpackageComponent } from './create-workpackage/create-workpackage.component';
+import { WorkpackageFormComponent } from './workpackage-form/workpackage-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProjectsOverviewComponent,
-    ProjectDetailComponent
+    ProjectDetailComponent,
+    ProjectFormComponent,
+    CreateProjectComponent,
+    EditProjectComponent,
+    CreateWorkpackageComponent,
+    WorkpackageFormComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +47,8 @@ import {NgxGraphModule} from "@swimlane/ngx-graph";
     CdkTableModule,
     MatIconModule,
     MatButtonModule,
-    NgxGraphModule
+    NgxGraphModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

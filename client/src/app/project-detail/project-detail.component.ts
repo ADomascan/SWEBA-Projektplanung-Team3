@@ -1,24 +1,15 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {animate, state, style, transition, trigger} from "@angular/animations";
-import {DataSource} from "@angular/cdk/collections";
-import {Project} from "../projects-overview/projects-overview.component";
+import {Project} from "../project";
+import {BehaviorSubject} from "rxjs";
+import {ProjectService} from "../project.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import * as moment from "moment/moment";
+import * as shape from 'd3-shape';
 
-export interface Workpackage {
-  id: number;
-  projectid: number;
-  name: string;
-  duration: number;
-}
-
-const ELEMENT_DATA: Workpackage[] = [
-  {id: 1, projectid: 1, name: 'Aufgabe 1', duration: 12 },
-  {id: 2, projectid: 1, name: 'Aufgabe 2', duration: 5 },
-  {id: 3, projectid: 1, name: 'Aufgabe 3', duration: 2 },
-  {id: 4, projectid: 1, name: 'Aufgabe 4', duration: 4 },
-];
 
 @Component({
   selector: 'app-project-detail',
@@ -32,25 +23,134 @@ const ELEMENT_DATA: Workpackage[] = [
     ]),
   ],
 })
-export class ProjectDetailComponent  {
+export class ProjectDetailComponent implements OnInit {
 
-  displayedColumns = ['id', 'name', 'duration', 'projectid'];
-  dataSource = new MatTableDataSource<Workpackage>(ELEMENT_DATA);
-  clickedRows = new Set<Project>();
+  project: BehaviorSubject<Project> = new BehaviorSubject<Project>({
+    _id: "",
+    name: "",
+    projectManager: "",
+    startDate: new Date(),
+    workPackages:  [{
+      package:{
+        wpname: "",
+        startDate: new Date(),
+        duration: 0,
+        previousPackage: "",
+        assignee: "",
+        _pid: "",
+      },
+    }],
+
+  });
+
+  constructor(
+      private router: Router,
+      private route: ActivatedRoute,
+      private projectService: ProjectService,
+  ) { }
+
+  allWorkpackages: any;
+  displayedColumns = ['wpname', 'duration', 'previousPackage', 'assignee'];
+  dataSource = new MatTableDataSource<any>;
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   expandedElement: Project | null;
+  calculatedEndDate: any;
+  startDate: any;
+  graph: any = {nodes: [], links: []};
+  curve = shape.curveBundle.beta(1);
+  layout = "dagreCluster";
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) {
+      alert('No id provided');
+    }
+
+    this.projectService.getProject(id !).subscribe((data) => {
+      this.allWorkpackages = data.workPackages?.map(el => el.package);
+      this.dataSource = new MatTableDataSource(this.allWorkpackages);
+      this.showGraph();
+      this.calcEndDate();
+      this.startDate = moment(this.project.value.startDate).format("DD.MM.YYYY");
+      this.project.next(data);
+      console.log('data workpackages', this.project.value.workPackages);
+    });
+
+  }
+
   ngAfterViewInit() {
-    console.log(this.sort) //not undefined
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    console.log('project detail workpackages', this.project.value.workPackages);
+  }
+
+  public convertDate(date: Date) {
+    return moment(date).format('DD.MM.YYYY');
+  }
+
+  public calcEndDate() {
+    let endDate = moment(this.project.value.startDate);
+    if (this.allWorkpackages != undefined) {
+      for (let i=0; i < this.allWorkpackages.length; i++) {
+        console.log('Dur: ', this.allWorkpackages[i].duration);
+        endDate.add( 'days', this.allWorkpackages[i].duration);
+      }
+    }
+    this.calculatedEndDate = endDate.format("DD.MM.YYYY");
+  }
+
+  showGraph() {
+    if (this.allWorkpackages != undefined) {
+      console.log("yes");
+      for (let i=0; i < this.allWorkpackages.length; i++) {
+        this.graph.nodes.push(
+            {
+              id: this.allWorkpackages[i]._id,
+              label: this.allWorkpackages[i].name,
+              position: 'x' + i
+            }
+        )
+      }
+      console.log('Graph: ', this.graph.nodes);
+    }
+    this.graph.links = [];
   }
 
 
-  protected readonly DataSource = DataSource;
-  protected readonly ELEMENT_DATA = ELEMENT_DATA;
+  public deleteWorkpackage(element: any) {
+    for (let i=0; i < this.allWorkpackages.length; i++) {
+      if (this.allWorkpackages[i].id == element.id) {
+        this.allWorkpackages.splice(i, i+1);
+      }
+    }
+    this.updateProject();
+  }
+
+  public updateProject() {
+
+    const projectToUpdate = {
+      id: this.project.value._id,
+      name: this.project.value.name,
+      startDate: this.project.value.startDate,
+      projectManager: this.project.value.projectManager,
+      workPackages: this.allWorkpackages
+    }
+
+
+    this.projectService.updateProject(this.project.value._id || '', projectToUpdate)
+        .subscribe({
+          next: () => {
+            document.location.reload();
+            this.router.navigate(['projects/detail/', this.project.value._id]);
+          },
+          error: (error) => {
+            alert('Failed to update project');
+            console.error(error);
+          }
+        })
+  }
 
 }
