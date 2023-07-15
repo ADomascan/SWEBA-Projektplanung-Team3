@@ -5,13 +5,13 @@ export interface Project {
     startDate: Date;
     projectManager:string;
     workPackages?: [{
-        package?:[{
+        package?:{
             name:string;
             startDate?:Date;
             duration?:number;
             previousPackage?:string;
             assignee?:string;
             _pid?:string;
-        }],
+        },
     }];
 }
