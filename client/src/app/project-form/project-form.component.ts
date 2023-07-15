@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {BehaviorSubject} from "rxjs";
 import {Project} from "../project";
 
@@ -16,7 +16,7 @@ export class ProjectFormComponent implements OnInit {
     _id: "",
     name: "",
     projectManager: "",
-    startDate: new Date()
+    startDate: new Date(),
   });
 
   @Output()
@@ -53,6 +53,7 @@ export class ProjectFormComponent implements OnInit {
   submitForm() {
     this.formSubmitted.emit(this.projectForm.value);
   }
+
 
 
 }

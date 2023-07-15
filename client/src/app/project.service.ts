@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject, tap } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Project } from './project';
  
 @Injectable({
@@ -33,7 +33,7 @@ export class ProjectService {
    return this.httpClient.post(`${this.url}/projects`, project, { responseType: 'text' });
  }
  
- updateProject(id: string, project: Project): Observable<string> {
+ updateProject(id: string, project: any): Observable<string> {
    return this.httpClient.put(`${this.url}/projects/${id}`, project, { responseType: 'text' });
  }
  

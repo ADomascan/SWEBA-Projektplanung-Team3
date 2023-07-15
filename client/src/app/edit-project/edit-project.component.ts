@@ -36,6 +36,7 @@ export class EditProjectComponent implements OnInit {
   }
 
   editProject(project: Project) {
+    console.log(project);
     this.projectService.updateProject(this.project.value._id || '', project)
         .subscribe({
           next: () => {

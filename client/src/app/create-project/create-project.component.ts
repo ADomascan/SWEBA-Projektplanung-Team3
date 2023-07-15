@@ -15,6 +15,7 @@ export class CreateProjectComponent {
   ) { }
 
   createProject(project: Project) {
+      console.log("a: " + project._id + " b: " + project.workPackages)
     this.projectService.createProject(project)
         .subscribe({
           next: () => {

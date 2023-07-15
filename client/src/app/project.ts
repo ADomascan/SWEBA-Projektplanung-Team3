@@ -5,13 +5,17 @@ export interface Project {
     startDate: Date;
     projectManager:string;
     workPackages?: [{
-        workpackage?:[{
-            name:string;
+        package?:{
+            wpname:string;
             startDate?:Date;
             duration?:number;
             previousPackage?:string;
             assignee?:string;
             _pid?:string;
-        }],
+        },
     }];
+}
+
+export interface Workpackage {
+
 }

@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 import {Project} from "../project";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-workpackage-form',
@@ -18,14 +18,13 @@ export class WorkpackageFormComponent {
     projectManager: "",
     startDate: new Date(),
     workPackages:  [{
-      workpackage:[{
-        name: "",
+      package:{
+        wpname: "",
         startDate: new Date(),
         duration: 0,
         previousPackage: "",
-        assignee: "",
-        _pid: "",
-      }],
+        assignee: ""
+      },
     }],
   });
 
@@ -37,41 +36,37 @@ export class WorkpackageFormComponent {
   @Output()
   formSubmitted = new EventEmitter<Project>();
 
-  workpackageForm: FormGroup = new FormGroup({});
+  workpackageForm: FormGroup = new FormGroup({
+    wpname: new FormControl(''),
+    durationInDays: new FormControl(''),
+    assignee: new FormControl('')
+  });
+
+  private currentProject: Project;
 
   constructor(private fb: FormBuilder) { }
 
   get id() { return this.workpackageForm.get('_pid')!; }
-  get name() { return this.workpackageForm.get('name')!; }
-  get duration() {return this.workpackageForm.get('duration')!;}
+  get wpname() { return this.workpackageForm.get('wpname')!; }
+  get durationInDays() {return this.workpackageForm.get('durationInDays')!;}
   get startDate() { return this.workpackageForm.get('startDate')!; }
   get assignee() { return this.workpackageForm.get('assignee')!; }
   get previousPackage() {return this.workpackageForm.get('previousPackage')!;}
 
-  /*anpassen*/
+
   ngOnInit() {
-    this.initialState.subscribe(project => {
-      console.log("Id: " + project.workPackages);
-      this.workpackageForm = this.fb.group({
-        id: [project],
-        name: [ project.workPackages],
-        /*name: [ project.name ],
-        startDate: [ project.startDate],
-        projectManager: [ project.projectManager ]
-         */
-      });
-    });
+
+    console.log(this.initialState.value);
+
+    console.log("Initial State WP Values: " + this.initialState.value.workPackages?.values());
 
 
-    this.workpackageForm.valueChanges.subscribe((val) => { this.formValuesChanged.emit(val); });
   }
 
   submitForm() {
+    console.log('test on submit: ', this.workpackageForm.value);
     this.formSubmitted.emit(this.workpackageForm.value);
   }
 
-  calculateEnddate() {
-
-  }
 
 }

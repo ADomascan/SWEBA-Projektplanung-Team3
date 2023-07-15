@@ -17,14 +17,14 @@ export class CreateWorkpackageComponent {
         projectManager: "",
         startDate: new Date(),
         workPackages:  [{
-            workpackage:[{
-                name: "",
+            package:{
+                wpname: "",
                 startDate: new Date(),
                 duration: 0,
                 previousPackage: "",
                 assignee: "",
                 _pid: "",
-            }],
+            },
         }],
     });
 
@@ -40,18 +40,58 @@ export class CreateWorkpackageComponent {
             alert('No id provided');
         }
 
-        this.projectService.getProject(id !).subscribe((project) => {
+        this.projectService.getProject(id !).subscribe((project: Project) => {
+            console.log("projektdaten: ", project)
             this.project.next(project);
+            console.log('After res: ', this.project);
         });
     }
 
-  /*anpassen*/
 
-    createWorkpackage(project: Project) {
-        this.projectService.updateProject(this.project.value._id || '', project)
+    // was hier ankommt ist ein workpackage mit name assignee und durationInDays
+    createWorkpackage(workpackage:  any) {
+        if (this.project.value.workPackages == undefined) {
+            this.project.value["workPackages"] = [{
+                package:
+                    {
+                        wpname: workpackage.wpname,
+                        startDate: new Date(),
+                        duration: workpackage.durationInDays,
+                        previousPackage: "",
+                        assignee: workpackage.assignee,
+                        _pid: "",
+                    }
+            }];
+        } else {
+            //const oldwps = this.project.value.workPackages;
+            this.project.value.workPackages.push(
+                {
+                    package:
+                        {
+                            wpname: workpackage.wpname,
+                            startDate: new Date(),
+                            duration: workpackage.durationInDays,
+                            previousPackage: "",
+                            assignee: workpackage.assignee,
+                            _pid: "",
+                        }
+                }
+            );
+        }
+
+        const projectToUpdate = {
+            id: this.project.value._id,
+            name: this.project.value.name,
+            startDate: this.project.value.startDate,
+            projectManager: this.project.value.projectManager,
+            workPackages: this.project.value.workPackages
+        }
+
+
+        this.projectService.updateProject(this.project.value._id || '', projectToUpdate)
             .subscribe({
                 next: () => {
-                    this.router.navigate(['/projects']);
+                    this.router.navigate(['/projects/detail/', this.project.value._id]);
                 },
                 error: (error) => {
                     alert('Failed to update project');

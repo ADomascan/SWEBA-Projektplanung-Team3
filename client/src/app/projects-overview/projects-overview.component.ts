@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild, ViewChildren} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
@@ -25,7 +25,7 @@ import * as moment from "moment";
     ],
 })
 
-export class ProjectsOverviewComponent implements OnInit, AfterViewInit {
+export class ProjectsOverviewComponent implements OnInit {
 
     projects$: Observable<Project[]> = new Observable();
 
@@ -49,14 +49,8 @@ export class ProjectsOverviewComponent implements OnInit, AfterViewInit {
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
         });
-        console.log('on init', this.dataSource.paginator);
     }
 
-    ngAfterViewInit() {
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        console.log('after view init', this.dataSource.paginator);
-    }
 
     deleteProject(id: string) {
         this.projectService.deleteProject(id).subscribe({
