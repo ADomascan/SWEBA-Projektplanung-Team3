@@ -47,7 +47,7 @@ export class ProjectDetailComponent implements OnInit {
       private router: Router,
       private route: ActivatedRoute,
       private projectService: ProjectService,
-) { }
+  ) { }
 
   allWorkpackages: any;
   displayedColumns = ['wpname', 'duration', 'previousPackage', 'assignee'];
@@ -58,6 +58,7 @@ export class ProjectDetailComponent implements OnInit {
   startDate: any;
   graph: any = {nodes: [], links: []};
   curve = shape.curveBundle.beta(1);
+  layout = "dagreCluster";
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -101,44 +102,55 @@ export class ProjectDetailComponent implements OnInit {
     this.calculatedEndDate = endDate.format("DD.MM.YYYY");
   }
 
-    showGraph() {
-      this.graph.nodes = [...this.allWorkpackages];
-      this.graph.links = [];
-    }
-
-
-    public deleteWorkpackage(element: any) {
+  showGraph() {
+    if (this.allWorkpackages != undefined) {
+      console.log("yes");
       for (let i=0; i < this.allWorkpackages.length; i++) {
-        if (this.allWorkpackages[i].id == element.id) {
-          this.allWorkpackages.splice(i, i+1);
-        }
-      }
-      this.updateProject();
-    }
-
-    public updateProject() {
-
-      const projectToUpdate = {
-        id: this.project.value._id,
-        name: this.project.value.name,
-        startDate: this.project.value.startDate,
-        projectManager: this.project.value.projectManager,
-        workPackages: this.allWorkpackages
-      }
-
-
-      this.projectService.updateProject(this.project.value._id || '', projectToUpdate)
-          .subscribe({
-            next: () => {
-              document.location.reload();
-              this.router.navigate(['projects/detail/', this.project.value._id]);
-            },
-            error: (error) => {
-              alert('Failed to update project');
-              console.error(error);
+        this.graph.nodes.push(
+            {
+              id: this.allWorkpackages[i]._id,
+              label: this.allWorkpackages[i].name,
+              position: 'x' + i
             }
-          })
+        )
+      }
+      console.log('Graph: ', this.graph.nodes);
+    }
+    this.graph.links = [];
+  }
+
+
+  public deleteWorkpackage(element: any) {
+    for (let i=0; i < this.allWorkpackages.length; i++) {
+      if (this.allWorkpackages[i].id == element.id) {
+        this.allWorkpackages.splice(i, i+1);
+      }
+    }
+    this.updateProject();
+  }
+
+  public updateProject() {
+
+    const projectToUpdate = {
+      id: this.project.value._id,
+      name: this.project.value.name,
+      startDate: this.project.value.startDate,
+      projectManager: this.project.value.projectManager,
+      workPackages: this.allWorkpackages
     }
 
 
+    this.projectService.updateProject(this.project.value._id || '', projectToUpdate)
+        .subscribe({
+          next: () => {
+            document.location.reload();
+            this.router.navigate(['projects/detail/', this.project.value._id]);
+          },
+          error: (error) => {
+            alert('Failed to update project');
+            console.error(error);
+          }
+        })
   }
+
+}
